@@ -1,3 +1,920 @@
-<h1>
-  Hello Welcome to Github Actions
-</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Navneet Tiwari — DevOps & Cloud Engineer</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,600;0,700;1,300&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #080d14;
+      --surface: #0d1520;
+      --surface2: #111d2e;
+      --border: rgba(0,200,255,0.12);
+      --cyan: #00c8ff;
+      --cyan-dim: rgba(0,200,255,0.15);
+      --green: #00ff9d;
+      --green-dim: rgba(0,255,157,0.12);
+      --text: #c8d8e8;
+      --text-dim: #5a7a96;
+      --white: #e8f4ff;
+      --orange: #ff7b35;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'JetBrains Mono', monospace;
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* GRID BACKGROUND */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0,200,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,200,255,0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* GLOW ORBS */
+    .orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(120px);
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.18;
+    }
+    .orb1 { width: 500px; height: 500px; background: var(--cyan); top: -150px; left: -100px; }
+    .orb2 { width: 400px; height: 400px; background: var(--green); bottom: 10%; right: -100px; }
+
+    /* CURSOR */
+    .cursor {
+      position: fixed;
+      width: 8px; height: 8px;
+      background: var(--cyan);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 0 12px var(--cyan);
+      transition: width 0.2s, height 0.2s;
+    }
+    .cursor-ring {
+      position: fixed;
+      width: 32px; height: 32px;
+      border: 1px solid rgba(0,200,255,0.5);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%, -50%);
+      transition: all 0.12s ease;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 200;
+      padding: 20px 56px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: linear-gradient(to bottom, rgba(8,13,20,0.97) 80%, transparent);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(8px);
+    }
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+    .nav-dot {
+      width: 8px; height: 8px;
+      background: var(--green);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--green);
+      animation: pulse 2s ease infinite;
+    }
+    @keyframes pulse {
+      0%,100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+    .nav-name {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: var(--white);
+      letter-spacing: 0.05em;
+    }
+    .nav-links { display: flex; gap: 32px; list-style: none; }
+    .nav-links a {
+      text-decoration: none;
+      color: var(--text-dim);
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+      position: relative;
+    }
+    .nav-links a::before {
+      content: '//';
+      margin-right: 4px;
+      color: var(--cyan);
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+    .nav-links a:hover { color: var(--cyan); }
+    .nav-links a:hover::before { opacity: 1; }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 100px 56px 60px;
+      position: relative;
+      z-index: 1;
+    }
+    .hero-inner { max-width: 900px; }
+
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--cyan-dim);
+      border: 1px solid var(--border);
+      padding: 8px 18px;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--cyan);
+      margin-bottom: 32px;
+      opacity: 0;
+      animation: fadeUp 0.7s ease 0.2s forwards;
+    }
+    .hero-tag-dot { width: 6px; height: 6px; background: var(--green); border-radius: 50%; box-shadow: 0 0 6px var(--green); animation: pulse 2s ease infinite; }
+
+    .hero h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(3rem, 7vw, 6.5rem);
+      font-weight: 800;
+      line-height: 1.0;
+      color: var(--white);
+      margin-bottom: 8px;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 0.35s forwards;
+    }
+    .hero h1 .accent { color: var(--cyan); text-shadow: 0 0 40px rgba(0,200,255,0.4); }
+
+    .hero-sub {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(1.2rem, 3vw, 2rem);
+      font-weight: 600;
+      color: var(--text-dim);
+      margin-bottom: 32px;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 0.5s forwards;
+    }
+
+    .hero-desc {
+      font-size: 0.8rem;
+      line-height: 2;
+      color: var(--text-dim);
+      max-width: 580px;
+      margin-bottom: 48px;
+      border-left: 2px solid var(--cyan);
+      padding-left: 20px;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 0.65s forwards;
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 40px;
+      margin-bottom: 48px;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 0.8s forwards;
+    }
+    .stat { text-align: left; }
+    .stat-num {
+      font-family: 'Syne', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: var(--cyan);
+      line-height: 1;
+      display: block;
+    }
+    .stat-label {
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+    }
+
+    .hero-btns {
+      display: flex;
+      gap: 16px;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 0.95s forwards;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 14px 28px;
+      border: 1px solid var(--cyan);
+      color: var(--cyan);
+      background: transparent;
+      position: relative;
+      overflow: hidden;
+      transition: color 0.3s ease;
+      cursor: none;
+    }
+    .btn::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--cyan);
+      transform: translateX(-101%);
+      transition: transform 0.3s ease;
+      z-index: 0;
+    }
+    .btn:hover { color: var(--bg); }
+    .btn:hover::after { transform: translateX(0); }
+    .btn span { position: relative; z-index: 1; }
+
+    .btn-green {
+      border-color: var(--green);
+      color: var(--green);
+    }
+    .btn-green::after { background: var(--green); }
+
+    /* SECTION WRAPPER */
+    .section { padding: 100px 56px; position: relative; z-index: 1; }
+
+    .sec-label {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 0.6rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--cyan);
+      margin-bottom: 16px;
+    }
+    .sec-label::after {
+      content: '';
+      flex: 1;
+      max-width: 80px;
+      height: 1px;
+      background: var(--cyan);
+      opacity: 0.4;
+    }
+    .section h2 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 800;
+      color: var(--white);
+      margin-bottom: 56px;
+    }
+
+    /* SKILLS */
+    .skills-bg { background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 12px;
+    }
+    .skill-chip {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      padding: 14px 20px;
+      font-size: 0.7rem;
+      letter-spacing: 0.05em;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: border-color 0.25s, background 0.25s, color 0.25s;
+      position: relative;
+      overflow: hidden;
+    }
+    .skill-chip::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--cyan-dim);
+      opacity: 0;
+      transition: opacity 0.25s;
+    }
+    .skill-chip:hover {
+      border-color: var(--cyan);
+      color: var(--cyan);
+    }
+    .skill-chip:hover::before { opacity: 1; }
+    .skill-icon { font-size: 1rem; position: relative; z-index: 1; }
+    .skill-chip span { position: relative; z-index: 1; }
+
+    /* EXPERIENCE */
+    .timeline { position: relative; padding-left: 32px; }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 1px;
+      background: linear-gradient(to bottom, var(--cyan), transparent);
+    }
+
+    .timeline-item {
+      position: relative;
+      margin-bottom: 56px;
+      padding: 32px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      transition: border-color 0.3s;
+    }
+    .timeline-item:hover { border-color: rgba(0,200,255,0.3); }
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -38px; top: 36px;
+      width: 12px; height: 12px;
+      background: var(--cyan);
+      border-radius: 50%;
+      box-shadow: 0 0 12px var(--cyan);
+    }
+    .timeline-item::after {
+      content: '';
+      position: absolute;
+      left: -32px; top: 41px;
+      width: 32px; height: 1px;
+      background: var(--cyan);
+      opacity: 0.4;
+    }
+
+    .tl-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .tl-role {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--white);
+    }
+    .tl-company {
+      font-size: 0.7rem;
+      color: var(--cyan);
+      letter-spacing: 0.1em;
+      margin-top: 4px;
+    }
+    .tl-date {
+      font-size: 0.62rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      padding: 6px 14px;
+      white-space: nowrap;
+    }
+
+    .tl-bullets { list-style: none; }
+    .tl-bullets li {
+      font-size: 0.75rem;
+      line-height: 1.9;
+      color: var(--text-dim);
+      padding: 6px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      display: flex;
+      gap: 12px;
+    }
+    .tl-bullets li::before {
+      content: '▸';
+      color: var(--cyan);
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    /* CERTIFICATIONS */
+    .certs-bg { background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+
+    .certs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+    }
+    .cert-card {
+      border: 1px solid var(--border);
+      padding: 32px;
+      background: var(--surface2);
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.3s;
+    }
+    .cert-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 3px;
+      height: 100%;
+      background: var(--cyan);
+      box-shadow: 0 0 12px var(--cyan);
+    }
+    .cert-card:nth-child(2)::before { background: var(--green); box-shadow: 0 0 12px var(--green); }
+    .cert-card:nth-child(3)::before { background: var(--orange); box-shadow: 0 0 12px var(--orange); }
+    .cert-card:hover { border-color: rgba(0,200,255,0.35); }
+
+    .cert-ico { font-size: 2rem; margin-bottom: 16px; }
+    .cert-name {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 8px;
+    }
+    .cert-org {
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+    }
+
+    /* EDUCATION */
+    .edu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+    }
+    .edu-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 32px;
+      transition: border-color 0.3s;
+    }
+    .edu-card:hover { border-color: rgba(0,255,157,0.35); }
+    .edu-degree {
+      font-family: 'Syne', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 8px;
+    }
+    .edu-school {
+      font-size: 0.72rem;
+      color: var(--green);
+      letter-spacing: 0.08em;
+      margin-bottom: 12px;
+    }
+    .edu-score {
+      font-size: 2rem;
+      font-family: 'Syne', sans-serif;
+      font-weight: 800;
+      color: var(--cyan);
+    }
+    .edu-year {
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-top: 4px;
+    }
+
+    /* CONTACT */
+    .contact-wrap {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 64px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .contact-wrap::before {
+      content: '';
+      position: absolute;
+      top: -60px; right: -60px;
+      width: 300px; height: 300px;
+      background: var(--cyan);
+      border-radius: 50%;
+      filter: blur(100px);
+      opacity: 0.06;
+    }
+    .contact-title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 800;
+      color: var(--white);
+      line-height: 1.1;
+      margin-bottom: 20px;
+    }
+    .contact-title span { color: var(--cyan); }
+
+    .contact-desc {
+      font-size: 0.78rem;
+      line-height: 1.9;
+      color: var(--text-dim);
+      margin-bottom: 36px;
+    }
+
+    .contact-items { display: flex; flex-direction: column; gap: 20px; }
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 18px 24px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      text-decoration: none;
+      color: var(--text);
+      font-size: 0.75rem;
+      transition: border-color 0.25s, color 0.25s;
+    }
+    .contact-item:hover { border-color: var(--cyan); color: var(--cyan); }
+    .ci-icon { font-size: 1.1rem; }
+    .ci-label { font-size: 0.55rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-dim); display: block; margin-bottom: 2px; }
+
+    /* FOOTER */
+    footer {
+      padding: 24px 56px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.6rem;
+      letter-spacing: 0.15em;
+      color: var(--text-dim);
+      position: relative;
+      z-index: 1;
+      text-transform: uppercase;
+    }
+
+    /* SCROLL REVEAL */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 860px) {
+      nav { padding: 16px 24px; }
+      .nav-links { display: none; }
+      .hero, .section { padding-left: 24px; padding-right: 24px; }
+      .hero-stats { gap: 24px; }
+      .contact-wrap { grid-template-columns: 1fr; gap: 40px; padding: 36px 24px; }
+      footer { flex-direction: column; gap: 8px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#" class="nav-brand">
+      <div class="nav-dot"></div>
+      <span class="nav-name">Navneet Tiwari</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#certs">Certifications</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-tag">
+        <div class="hero-tag-dot"></div>
+        <span>Available for Opportunities · Noida, India</span>
+      </div>
+      <h1>NAVNEET<br/><span class="accent">TIWARI</span></h1>
+      <p class="hero-sub">DevOps &amp; Cloud Engineer</p>
+      <p class="hero-desc">
+        Results-driven Middleware and DevOps Engineer with 6+ years of IT experience. Specialising in Azure DevOps, CI/CD automation, and middleware engineering — driving operational excellence through cloud-native solutions.
+      </p>
+      <div class="hero-stats">
+        <div class="stat">
+          <span class="stat-num">6+</span>
+          <span class="stat-label">Years Experience</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num">4</span>
+          <span class="stat-label">Major Roles</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num">30%</span>
+          <span class="stat-label">Deploy Time Cut</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num">40%</span>
+          <span class="stat-label">Incident Reduction</span>
+        </div>
+      </div>
+      <div class="hero-btns">
+        <a href="#experience" class="btn"><span>// View Experience</span></a>
+        <a href="#contact" class="btn btn-green"><span>// Get in Touch</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills" class="section skills-bg">
+    <div class="sec-label">01 &mdash; Tech Stack</div>
+    <h2 class="reveal">Key Skills &amp; Tools</h2>
+    <div class="skills-grid">
+      <div class="skill-chip reveal"><span class="skill-icon">☁️</span><span>Microsoft Azure</span></div>
+      <div class="skill-chip reveal"><span class="skill-icon">🔄</span><span>Azure DevOps</span></div>
+      <div class="skill-chip reveal"><span class="skill-icon">🏗️</span><span>Azure Landing Zone</span></div>
+      <div class="skill-chip reveal"><span class="skill-icon">🌐</span><span>Azure Networking</span></div>
+      <div class="skill-chip reveal"><span class="skill-icon">⚙️</span><span>CI/CD (YAML/Classic)</span></div>
+      <div class="skill-chip reveal"><span class="skill-icon">📜</span><span>PowerShell Scripting</span></div>
+      <div class="skill-chip reveal"><span class="skill-icon">🏛️</span><span>Terraform (IaC)</span></div>
+      <div class="skill-chip reveal"><span class="skill-icon">🔀</span><span>Git</span></div>
+      <div class="skill-chip reveal"><span class="skill-icon">📊</span><span>Grafana</span></div>
+      <div class="skill-chip reveal"><span class="skill-icon">🤖</span><span>Automation Anywhere</span></div>
+      <div class="skill-chip reveal"><span class="skill-icon">🤖</span><span>UiPath</span></div>
+      <div class="skill-chip reveal"><span class="skill-icon">📋</span><span>ServiceNow / BMC Helix</span></div>
+      <div class="skill-chip reveal"><span class="skill-icon">🪟</span><span>Windows Server Admin</span></div>
+      <div class="skill-chip reveal"><span class="skill-icon">🔷</span><span>SharePoint Administration</span></div>
+      <div class="skill-chip reveal"><span class="skill-icon">🛡️</span><span>Cloud Security</span></div>
+      <div class="skill-chip reveal"><span class="skill-icon">📝</span><span>Technical Documentation</span></div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section id="experience" class="section">
+    <div class="sec-label">02 &mdash; Career</div>
+    <h2 class="reveal">Work Experience</h2>
+
+    <div class="timeline">
+
+      <div class="timeline-item reveal">
+        <div class="tl-meta">
+          <div>
+            <div class="tl-role">Automation Engineer</div>
+            <div class="tl-company">Accenture Solutions Pvt Ltd · Airline Client</div>
+          </div>
+          <div class="tl-date">Mar 2025 – Present</div>
+        </div>
+        <ul class="tl-bullets">
+          <li>Working as a DevOps and Automation Engineer for an Airline client, transforming business processes using Automation Anywhere.</li>
+          <li>Managing application deployments using Azure DevOps pipelines and CI/CD workflows.</li>
+          <li>Reducing manual efforts and ticket overload through intelligent automation strategies.</li>
+        </ul>
+      </div>
+
+      <div class="timeline-item reveal">
+        <div class="tl-meta">
+          <div>
+            <div class="tl-role">Middleware &amp; DevOps Engineer</div>
+            <div class="tl-company">Accenture Solutions Pvt Ltd · Insurance Client</div>
+          </div>
+          <div class="tl-date">Jun 2022 – Feb 2025</div>
+        </div>
+        <ul class="tl-bullets">
+          <li>Orchestrated creation of production and non-production cloud environments, deploying automation pipelines for seamless setup and configuration.</li>
+          <li>Built and optimised CI/CD pipelines in Azure DevOps — reduced deployment cycle time by <strong style="color:var(--cyan)">30%</strong>.</li>
+          <li>Managed and deployed shared services including SharePoint, Octopus, RPA, Adeptia, and Outsystems.</li>
+          <li>Enforced cloud security best practices, performed regular vulnerability assessments, and ensured regulatory compliance.</li>
+          <li>Collaborated cross-functionally with developers, operations, and infra teams to initiate and deliver new projects.</li>
+          <li>Rapid incident response in production — minimising MTTR and documenting all troubleshooting steps.</li>
+        </ul>
+      </div>
+
+      <div class="timeline-item reveal">
+        <div class="tl-meta">
+          <div>
+            <div class="tl-role">Azure Cloud Administrator</div>
+            <div class="tl-company">Accenture Solutions Pvt Ltd · Healthcare Client</div>
+          </div>
+          <div class="tl-date">Jun 2021 – May 2022</div>
+        </div>
+        <ul class="tl-bullets">
+          <li>Managed and monitored Azure resources: VMs, VNets, Storage Accounts, and Azure AD.</li>
+          <li>Deployed and maintained IaaS and PaaS services ensuring high availability and performance.</li>
+          <li>Configured Azure Backup, Site Recovery, and resource monitoring via Azure Monitor.</li>
+          <li>Automated routine tasks and deployments using Azure PowerShell scripts.</li>
+          <li>Provided technical support and troubleshooting — reduced incident resolution time by <strong style="color:var(--green)">40%</strong>.</li>
+        </ul>
+      </div>
+
+      <div class="timeline-item reveal">
+        <div class="tl-meta">
+          <div>
+            <div class="tl-role">SharePoint Administrator</div>
+            <div class="tl-company">Accenture Solutions Pvt Ltd · Healthcare Client</div>
+          </div>
+          <div class="tl-date">Feb 2019 – May 2021</div>
+        </div>
+        <ul class="tl-bullets">
+          <li>Managed SharePoint Online and On-premise (2013/2016) environments ensuring 99.9% uptime and optimal performance.</li>
+          <li>Configured site collections, libraries, lists, workflows, and user permissions.</li>
+          <li>Created and managed custom workflows using Power Automate and SP Designer.</li>
+          <li>Led SharePoint migration project from on-premise to SharePoint Online using ShareGate.</li>
+          <li>Automated administrative tasks using PowerShell scripts for efficiency and consistency.</li>
+        </ul>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- CERTIFICATIONS -->
+  <section id="certs" class="section certs-bg">
+    <div class="sec-label">03 &mdash; Credentials</div>
+    <h2 class="reveal">Certifications &amp; Training</h2>
+    <div class="certs-grid">
+      <div class="cert-card reveal">
+        <div class="cert-ico">🏅</div>
+        <div class="cert-name">Microsoft Azure Fundamentals</div>
+        <div class="cert-org">AZ-900 · Microsoft Certified</div>
+      </div>
+      <div class="cert-card reveal">
+        <div class="cert-ico">🤖</div>
+        <div class="cert-name">Advanced Automation Anywhere</div>
+        <div class="cert-org">Professional Certified · Automation Anywhere</div>
+      </div>
+      <div class="cert-card reveal">
+        <div class="cert-ico">🎓</div>
+        <div class="cert-name">Azure Admin (AZ-104)</div>
+        <div class="cert-org">Online Training · Udemy</div>
+      </div>
+      <div class="cert-card reveal">
+        <div class="cert-ico">✨</div>
+        <div class="cert-name">GenAI with Azure OpenAI</div>
+        <div class="cert-org">Online Training · Udemy</div>
+      </div>
+      <div class="cert-card reveal">
+        <div class="cert-ico">💬</div>
+        <div class="cert-name">Prompt Engineering</div>
+        <div class="cert-org">Online Training · Udemy</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- EDUCATION -->
+  <section class="section">
+    <div class="sec-label">04 &mdash; Education</div>
+    <h2 class="reveal">Academic Background</h2>
+    <div class="edu-grid">
+      <div class="edu-card reveal">
+        <div class="edu-degree">B.Tech — Electronics &amp; Communication</div>
+        <div class="edu-school">Lovely Professional University</div>
+        <div class="edu-score">9.0 GPA</div>
+        <div class="edu-year">Graduated 2018</div>
+      </div>
+      <div class="edu-card reveal">
+        <div class="edu-degree">12th Standard</div>
+        <div class="edu-school">SGV Inter College</div>
+        <div class="edu-score">88%</div>
+        <div class="edu-year">Graduated 2013</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" class="section">
+    <div class="sec-label">05 &mdash; Connect</div>
+    <div class="contact-wrap reveal">
+      <div>
+        <h2 class="contact-title">Let's Build<br/>Something <span>Great</span></h2>
+        <p class="contact-desc">
+          Open to new opportunities in DevOps, Cloud Engineering, and Automation. Whether it's a full-time role or a project collaboration — let's talk.
+        </p>
+        <a href="mailto:navneet.tiwari2496@gmail.com" class="btn"><span>// Send an Email</span></a>
+      </div>
+      <div class="contact-items">
+        <a href="mailto:navneet.tiwari2496@gmail.com" class="contact-item">
+          <span class="ci-icon">📧</span>
+          <div>
+            <span class="ci-label">Email</span>
+            navneet.tiwari2496@gmail.com
+          </div>
+        </a>
+        <a href="tel:+919041416240" class="contact-item">
+          <span class="ci-icon">📱</span>
+          <div>
+            <span class="ci-label">Phone</span>
+            +91 904 141 6240
+          </div>
+        </a>
+        <a href="#" class="contact-item">
+          <span class="ci-icon">💼</span>
+          <div>
+            <span class="ci-label">LinkedIn</span>
+            linkedin.com/in/navneettiwari
+          </div>
+        </a>
+        <div class="contact-item" style="cursor:default;">
+          <span class="ci-icon">📍</span>
+          <div>
+            <span class="ci-label">Location</span>
+            Noida, Uttar Pradesh, India
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <span>© 2026 Navneet Tiwari · All Rights Reserved</span>
+    <span>Senior Application Analyst · Accenture · India</span>
+  </footer>
+
+  <script>
+    // Custom cursor
+    const cursor = document.getElementById('cursor');
+    const ring = document.getElementById('cursorRing');
+    let mx = 0, my = 0, rx = 0, ry = 0;
+    document.addEventListener('mousemove', e => {
+      mx = e.clientX; my = e.clientY;
+      cursor.style.left = mx + 'px';
+      cursor.style.top = my + 'px';
+    });
+    (function animRing() {
+      rx += (mx - rx) * 0.1;
+      ry += (my - ry) * 0.1;
+      ring.style.left = rx + 'px';
+      ring.style.top = ry + 'px';
+      requestAnimationFrame(animRing);
+    })();
+    document.querySelectorAll('a, button, .skill-chip').forEach(el => {
+      el.addEventListener('mouseenter', () => {
+        cursor.style.width = '16px'; cursor.style.height = '16px';
+        ring.style.width = '48px'; ring.style.height = '48px';
+      });
+      el.addEventListener('mouseleave', () => {
+        cursor.style.width = '8px'; cursor.style.height = '8px';
+        ring.style.width = '32px'; ring.style.height = '32px';
+      });
+    });
+
+    // Scroll reveal
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          obs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.08 });
+    document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+    // Typing effect on hero tag
+    const typed = document.querySelector('.hero-tag span');
+    const original = typed.textContent;
+    typed.textContent = '';
+    let i = 0;
+    setTimeout(() => {
+      const t = setInterval(() => {
+        typed.textContent += original[i++];
+        if (i >= original.length) clearInterval(t);
+      }, 35);
+    }, 400);
+  </script>
+</body>
+</html>
