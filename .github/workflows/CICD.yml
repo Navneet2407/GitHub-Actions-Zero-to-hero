@@ -33,7 +33,8 @@ jobs:
       - name: Test the container
         run: echo "testing the container"
   deploy:
-    needs: [test]
+    if: inputs.environments == 'dev'
+    needs: [build,test]
     runs-on: ubuntu-latest
     steps:
       - name: Deploy the app
