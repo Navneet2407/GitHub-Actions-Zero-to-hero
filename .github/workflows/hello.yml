@@ -2,11 +2,12 @@
 #this is workflow name
 name: Hello Workflow
 
-# workflow runs whenever a code is pushed to main branch
+# workflow runs whenever a code is pushed to main branch & now updated to run manually
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch: null
+  #push:
+   # branches:
+    #  - main
 # this is the job declaration
 jobs:
 
