@@ -1,0 +1,21 @@
+---
+#this is workflow name
+name: Hello Workflow
+
+# workflow runs whenever a code is pushed to main branch
+on:
+  push:
+    branches:
+      - main
+# this is the job declaration
+jobs:
+
+# this is job name which runs on ubuntu-latest(github privided ) -> every jobs need a runner either Github Runner or Self hosted runner (your own ec2 instance )
+  greet:
+    runs-on: ubuntu-latest
+    # this is the step declaration -> steps needed to perform -> multiple steps can be run in one yml or workflow.
+    steps:
+      - name: say hello to all users
+        run: echo "Hello Everyone"
+      - name: say hello to usernames
+        run: echo "hello $USER"
