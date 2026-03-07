@@ -19,3 +19,8 @@ jobs:
         run: echo "Hello Navneet"
       - name: say hello to usernames
         run: echo "hello $USER"
+  details:
+      runs-on: ubuntu-latest
+      steps:
+        - name: version of python and docker
+          run: docker --version && python --version
