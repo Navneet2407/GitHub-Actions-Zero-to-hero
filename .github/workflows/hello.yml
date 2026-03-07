@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     # this is the step declaration -> steps needed to perform -> multiple steps can be run in one yml or workflow.
     steps:
-      - name: say hello to all users
-        run: echo "Hello Everyone"
+      - name: say hello to user
+        run: echo "Hello Navneet"
       - name: say hello to usernames
         run: echo "hello $USER"
