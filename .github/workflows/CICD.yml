@@ -9,16 +9,21 @@ jobs:
       - name: checkout-code
         run: echo "Code cloned from Github"
   build:
+  # this is serailization of jobs needs command: (like each job will run sequentially once the previous job is completed
+   # otherwise all jobs will be running parallel and deploy can happen before bulit & test
+    needs: [code]
     runs-on: ubuntu-latest
     steps:
       - name: build docker container
         run: echo "docker container build"
   test:
+    needs: [build]
     runs-on: ubuntu-latest
     steps:
       - name: Test the container
         run: echo "testing the container"
   deploy:
+    needs: [test]
     runs-on: ubuntu-latest
     steps:
       - name: Deploy the app
