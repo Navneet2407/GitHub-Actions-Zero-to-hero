@@ -3,11 +3,14 @@
 name: Hello Workflow
 
 # workflow runs whenever a code is pushed to main branch & now updated to run manually
+# now workflow will run whenever ant html file on main branch is pushed or updated
 on:
-  workflow_dispatch: null
-  #push:
-   # branches:
-    #  - main
+  #workflow_dispatch: null
+  push:
+   branches:
+      - main
+   paths: 
+      - '**.html'
 # this is the job declaration
 jobs:
 
