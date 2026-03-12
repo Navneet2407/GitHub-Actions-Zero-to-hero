@@ -1,0 +1,29 @@
+name: Python Lint
+
+on:
+    push:
+        branches:
+         - main
+
+jobs:
+    validate:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v3
+
+            - name: setup python 3.13
+              uses: actions/setup-python@v4
+              with:
+                python-version: "3.13"
+
+            - name: install libraries and dependencies
+              run: pip install -r requirements.txt
+            
+            - name: run linter
+              run: flake8 app.py
+
+
+
+
+
