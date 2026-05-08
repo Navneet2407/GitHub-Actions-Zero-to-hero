@@ -10,7 +10,7 @@ jobs:
             DOCKERHUB_USER: ${{ vars.DOCKERHUB_USER}}
             DOCKER_TAG: ${{ github.sha}}
 
-        runs-on: ubuntu-latest
+        runs-on: self-hosted
         
         steps:
              - name: Chekout code
